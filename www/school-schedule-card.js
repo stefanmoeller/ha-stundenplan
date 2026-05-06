@@ -1,0 +1,182 @@
+class SchoolScheduleCard extends HTMLElement {
+  setConfig(config) {
+    if (!config.entity) throw new Error("entity is required");
+    this.config = { mode: "today", title: "Stundenplan", show_title: true, ...config };
+  }
+
+  set hass(hass) {
+    this._hass = hass;
+    this.render();
+  }
+
+  getCardSize() {
+    return this.config?.mode === "table" ? 5 : 3;
+  }
+
+  localize(key, fallback, vars = {}) {
+    const value = this._hass?.localize?.(`component.stundenplan.${key}`, vars) || fallback;
+    return Object.entries(vars).reduce((text, [name, val]) => String(text).replace(`{${name}}`, val), value);
+  }
+
+  navigate() {
+    const tap = this.config?.tap_action;
+    if (tap?.action === "navigate" && tap.navigation_path) {
+      history.pushState(null, "", tap.navigation_path);
+      window.dispatchEvent(new Event("location-changed"));
+    }
+  }
+
+  render() {
+    if (!this.config || !this._hass) return;
+    const state = this._hass.states[this.config.entity];
+    if (!state) {
+      this.innerHTML = `<ha-card><div class="card-content">${this.escape(this.localize("common.entity_not_found", "Entity not found"))}: ${this.escape(this.config.entity)}</div></ha-card>`;
+      return;
+    }
+
+    const mode = this.config.mode || "today";
+    const clickable = this.config.tap_action?.action === "navigate";
+    this.innerHTML = `
+      <ha-card class="${clickable ? "clickable" : ""}">
+        ${this.config.show_title !== false && this.config.title ? `<div class="card-header">${this.escape(this.config.title)}</div>` : ""}
+        <div class="card-content">
+          ${mode === "today" ? this.renderToday(state) : ""}
+          ${mode === "table" ? this.renderTable(state) : ""}
+          ${(mode === "cards" || mode === "card") ? this.renderCards(state) : ""}
+          ${!["today", "table", "cards", "card"].includes(mode) ? `<div class="free">${this.escape(this.localize("common.unknown_mode", "Unknown mode"))}: ${this.escape(mode)}</div>` : ""}
+        </div>
+      </ha-card>
+      <style>
+        ha-card.clickable { cursor: pointer; }
+        .headline { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+        .subline { color: var(--secondary-text-color); margin-bottom: 14px; }
+        .free { padding: 12px; border-radius: 12px; background: var(--secondary-background-color); }
+        .lesson-list { display: flex; flex-direction: column; gap: 10px; }
+        .lesson { display: flex; align-items: center; gap: 10px; min-height: 32px; }
+        .lesson-icon-circle {
+          width: 30px;
+          height: 30px;
+          min-width: 30px;
+          border-radius: 50%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--primary-color);
+          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.16);
+        }
+        .lesson-icon-circle ha-icon { width: 19px; height: 19px; color: var(--text-primary-color); }
+        .lesson-name { font-weight: 500; }
+        .empty { color: var(--secondary-text-color); font-style: italic; }
+        .table-wrap { overflow-x: auto; }
+        table { border-collapse: collapse; width: 100%; min-width: 620px; }
+        th, td { border: 1px solid var(--divider-color); padding: 8px; vertical-align: top; }
+        th { background: var(--secondary-background-color); text-align: left; font-weight: 600; }
+        td.time { white-space: nowrap; color: var(--secondary-text-color); font-size: 0.9rem; }
+        .cell-subject { display: flex; align-items: center; gap: 6px; }
+        .cell-subject .lesson-icon-circle { width: 24px; height: 24px; min-width: 24px; }
+        .cell-subject .lesson-icon-circle ha-icon { width: 15px; height: 15px; }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+        .day-card { border: 1px solid var(--divider-color); border-radius: 14px; padding: 12px; background: var(--card-background-color); }
+        .day-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+        .day-title { font-weight: 700; }
+        .badge { color: var(--secondary-text-color); font-size: 0.9rem; white-space: nowrap; text-align: right; }
+        @media (max-width: 600px) {
+          table { min-width: 520px; }
+          th, td { padding: 6px; }
+          .cards { grid-template-columns: 1fr; }
+        }
+      </style>
+    `;
+    if (clickable) this.querySelector("ha-card").addEventListener("click", () => this.navigate());
+  }
+
+  renderToday(state) {
+    const a = state.attributes || {};
+    const weekday = a.weekday_name || this.localize("common.today", "Today");
+    if (a.is_free_day) {
+      return `<div class="headline">${this.escape(weekday)}</div><div class="free">${this.escape(this.localize("common.free_day", "No school today"))}${a.free_reason ? `: ${this.escape(a.free_reason)}` : ""}</div>`;
+    }
+    if (!a.is_school_day || !a.lessons?.length) {
+      return `<div class="headline">${this.escape(weekday)}</div><div class="free">${this.escape(this.localize("common.no_lessons", "No lessons"))}</div>`;
+    }
+    return `
+      <div class="headline">${this.escape(weekday)}</div>
+      <div class="subline">${this.escape(this.localize("common.school_end", "School ends"))}: ${this.escape(a.school_end || "-")} Uhr</div>
+      <div class="lesson-list">${a.lessons.map((lesson) => this.renderLesson(lesson, false)).join("")}</div>
+    `;
+  }
+
+  renderTable(state) {
+    const a = state.attributes || {};
+    const lessonTimes = a.lesson_times || [];
+    const schoolDays = a.school_days || [];
+    const days = a.days || {};
+    const maxRows = Number(a.lesson_count || lessonTimes.length || 0);
+    if (!maxRows || !schoolDays.length) return `<div class="free">${this.escape(this.localize("common.missing_schedule_data", "No timetable data found."))}</div>`;
+    return `
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Zeit</th>${schoolDays.map((day) => `<th>${this.escape(days[day]?.name || a.weekday_names?.[day] || day)}</th>`).join("")}</tr></thead>
+          <tbody>
+            ${Array.from({ length: maxRows }, (_, i) => `
+              <tr>
+                <td class="time">${this.escape(lessonTimes[i]?.start || "")} - ${this.escape(lessonTimes[i]?.end || "")}</td>
+                ${schoolDays.map((day) => {
+                  const gridLesson = days[day]?.lesson_grid?.[i];
+                  const foundLesson = (days[day]?.lessons || []).find((l) => l.hour === i + 1);
+                  const lesson = gridLesson || foundLesson;
+                  return `<td>${lesson ? this.renderLesson(lesson, true) : `<span class="empty">-</span>`}</td>`;
+                }).join("")}
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  renderCards(state) {
+    const a = state.attributes || {};
+    const schoolDays = a.school_days || [];
+    const days = a.days || {};
+    if (!schoolDays.length) return `<div class="free">${this.escape(this.localize("common.no_school_days", "No school days configured."))}</div>`;
+    return `
+      <div class="cards">
+        ${schoolDays.map((day) => {
+          const d = days[day] || {};
+          const lessons = d.lessons || [];
+          return `
+            <div class="day-card">
+              <div class="day-header"><div class="day-title">${this.escape(d.name || a.weekday_names?.[day] || day)}</div><div class="badge">${this.escape(this.localize("common.school_end", "School ends"))}: ${this.escape(d.school_end || "-")} Uhr</div></div>
+              <div class="lesson-list">${lessons.length ? lessons.map((lesson) => this.renderLesson(lesson, false)).join("") : `<span class="empty">${this.escape(this.localize("common.no_lessons", "No lessons"))}</span>`}</div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  renderLesson(lesson, compact) {
+    const color = lesson.color || "var(--primary-color)";
+    const icon = this.escape(lesson.icon || "mdi:book-open-page-variant");
+    const subject = this.escape(lesson.subject || "");
+    return `
+      <div class="${compact ? "cell-subject" : "lesson"}">
+        <span class="lesson-icon-circle" style="background:${this.escape(color)}">
+          <ha-icon icon="${icon}"></ha-icon>
+        </span>
+        <span class="lesson-name">${subject}</span>
+      </div>
+    `;
+  }
+
+  escape(value) {
+    return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+}
+
+if (!customElements.get("school-schedule-card")) {
+  customElements.define("school-schedule-card", SchoolScheduleCard);
+}
+window.customCards = window.customCards || [];
+window.customCards.push({ type: "school-schedule-card", name: "Stundenplan Karte", description: "Zeigt den heutigen oder vollständigen Schulstundenplan an." });
