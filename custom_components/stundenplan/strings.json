@@ -1,12 +1,12 @@
 {
-  "title": "Timetable",
+  "title": "Stundenplan",
   "config": {
     "step": {
       "user": {
         "title": "General settings",
-        "description": "Set the basic timetable data.",
+        "description": "Configure the basic settings for this timetable.",
         "data": {
-          "child_name": "Timetable name",
+          "child_name": "Schedule name",
           "lesson_count": "Maximum number of lessons",
           "school_days": "School days",
           "holiday_calendar": "Holiday calendar"
@@ -14,7 +14,7 @@
       },
       "lesson_times": {
         "title": "Lesson times",
-        "description": "Define when each lesson starts and ends.",
+        "description": "Configure start and end time for each lesson.",
         "data": {
           "lesson_1_start": "Lesson 1: from",
           "lesson_1_end": "Lesson 1: until",
@@ -44,50 +44,50 @@
       },
       "subject_count": {
         "title": "Subjects",
-        "description": "Set how many different school subjects you want to configure.",
+        "description": "Set how many different school subjects should be available.",
         "data": {
-          "subject_count": "Number of different subjects"
+          "subject_count": "Number of different school subjects"
         }
       },
-      "subject_detail": {
-        "title": "Subject {number} of {total}",
-        "description": "Edit name, icon and color for this subject.",
+      "subject": {
+        "title": "Subject {current} of {total}",
+        "description": "Edit name, icon and color of this subject.",
         "data": {
-          "subject_name": "Name",
-          "subject_icon": "Icon",
-          "subject_color": "Color"
+          "name": "Name",
+          "icon": "Icon",
+          "color": "Color"
         }
       },
-      "weekday": {
+      "day_plan": {
         "title": "{day}",
-        "description": "Select the matching subject for each lesson.",
+        "description": "Select the subjects for this weekday.",
         "data": {
-          "lesson_1_subject": "Lesson 1",
-          "lesson_2_subject": "Lesson 2",
-          "lesson_3_subject": "Lesson 3",
-          "lesson_4_subject": "Lesson 4",
-          "lesson_5_subject": "Lesson 5",
-          "lesson_6_subject": "Lesson 6",
-          "lesson_7_subject": "Lesson 7",
-          "lesson_8_subject": "Lesson 8",
-          "lesson_9_subject": "Lesson 9",
-          "lesson_10_subject": "Lesson 10",
-          "lesson_11_subject": "Lesson 11",
-          "lesson_12_subject": "Lesson 12"
+          "lesson_1": "Lesson 1",
+          "lesson_2": "Lesson 2",
+          "lesson_3": "Lesson 3",
+          "lesson_4": "Lesson 4",
+          "lesson_5": "Lesson 5",
+          "lesson_6": "Lesson 6",
+          "lesson_7": "Lesson 7",
+          "lesson_8": "Lesson 8",
+          "lesson_9": "Lesson 9",
+          "lesson_10": "Lesson 10",
+          "lesson_11": "Lesson 11",
+          "lesson_12": "Lesson 12"
         }
       }
     },
-    "abort": {
-      "already_configured": "This timetable is already configured."
+    "error": {
+      "required": "This field is required."
     }
   },
   "options": {
     "step": {
       "user": {
         "title": "General settings",
-        "description": "Adjust the basic timetable data.",
+        "description": "Edit the basic settings for this timetable.",
         "data": {
-          "child_name": "Timetable name",
+          "child_name": "Schedule name",
           "lesson_count": "Maximum number of lessons",
           "school_days": "School days",
           "holiday_calendar": "Holiday calendar"
@@ -95,7 +95,7 @@
       },
       "lesson_times": {
         "title": "Lesson times",
-        "description": "Adjust each lesson's start and end time.",
+        "description": "Configure start and end time for each lesson.",
         "data": {
           "lesson_1_start": "Lesson 1: from",
           "lesson_1_end": "Lesson 1: until",
@@ -125,105 +125,37 @@
       },
       "subject_count": {
         "title": "Subjects",
-        "description": "Adjust the number of different subjects.",
-        "data": {
-          "subject_count": "Number of different subjects"
-        }
+        "description": "Set how many different school subjects should be available.",
+        "data": {"subject_count": "Number of different school subjects"}
       },
-      "subject_detail": {
-        "title": "Subject {number} of {total}",
-        "description": "Edit name, icon and color for this subject.",
-        "data": {
-          "subject_name": "Name",
-          "subject_icon": "Icon",
-          "subject_color": "Color"
-        }
+      "subject": {
+        "title": "Subject {current} of {total}",
+        "description": "Edit name, icon and color of this subject.",
+        "data": {"name": "Name", "icon": "Icon", "color": "Color"}
       },
-      "weekday": {
+      "day_plan": {
         "title": "{day}",
-        "description": "Select the matching subject for each lesson.",
+        "description": "Select the subjects for this weekday.",
         "data": {
-          "lesson_1_subject": "Lesson 1",
-          "lesson_2_subject": "Lesson 2",
-          "lesson_3_subject": "Lesson 3",
-          "lesson_4_subject": "Lesson 4",
-          "lesson_5_subject": "Lesson 5",
-          "lesson_6_subject": "Lesson 6",
-          "lesson_7_subject": "Lesson 7",
-          "lesson_8_subject": "Lesson 8",
-          "lesson_9_subject": "Lesson 9",
-          "lesson_10_subject": "Lesson 10",
-          "lesson_11_subject": "Lesson 11",
-          "lesson_12_subject": "Lesson 12"
+          "lesson_1": "Lesson 1", "lesson_2": "Lesson 2", "lesson_3": "Lesson 3", "lesson_4": "Lesson 4", "lesson_5": "Lesson 5", "lesson_6": "Lesson 6", "lesson_7": "Lesson 7", "lesson_8": "Lesson 8", "lesson_9": "Lesson 9", "lesson_10": "Lesson 10", "lesson_11": "Lesson 11", "lesson_12": "Lesson 12"
         }
       }
-    }
-  },
-  "selector": {
-    "calendar": {
-      "none": "No calendar"
     },
-    "subject": {
-      "free": "No lesson / free"
+    "error": {
+      "required": "This field is required."
     }
   },
   "common": {
     "today": "Today",
     "school_end": "School ends",
-    "school_end_today": "School ends today",
-    "no_lessons": "No lessons",
     "free_day": "No school today",
-    "unknown_mode": "Unknown mode",
-    "entity_not_found": "Entity not found",
+    "no_lessons": "No lessons",
+    "no_school_days": "No school days configured.",
     "missing_schedule_data": "No timetable data found.",
-    "no_school_days": "No school days configured."
+    "entity_not_found": "Entity not found",
+    "unknown_mode": "Unknown mode",
+    "time": "Time"
   },
-  "weekdays": {
-    "mon": "Monday",
-    "tue": "Tuesday",
-    "wed": "Wednesday",
-    "thu": "Thursday",
-    "fri": "Friday",
-    "sat": "Saturday",
-    "sun": "Sunday"
-  },
-  "weekdays_short": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
-  },
-  "colors": {
-    "primary": "Primary color",
-    "accent": "Accent color",
-    "red": "Red",
-    "pink": "Pink",
-    "purple": "Purple",
-    "deep-purple": "Deep purple",
-    "indigo": "Indigo",
-    "blue": "Blue",
-    "light-blue": "Light blue",
-    "cyan": "Cyan",
-    "teal": "Teal",
-    "green": "Green",
-    "light-green": "Light green",
-    "lime": "Lime",
-    "yellow": "Yellow",
-    "amber": "Amber",
-    "orange": "Orange",
-    "deep-orange": "Deep orange",
-    "brown": "Brown",
-    "grey": "Grey",
-    "blue-grey": "Blue grey",
-    "black": "Black",
-    "white": "White",
-    "disabled": "Disabled"
-  },
-  "card": {
-    "name": "Timetable Card",
-    "description": "Shows today's or the full school timetable."
-  }
+  "weekdays": {"mon": "Monday", "tue": "Tuesday", "wed": "Wednesday", "thu": "Thursday", "fri": "Friday", "sat": "Saturday", "sun": "Sunday"},
+  "weekdays_short": {"mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu", "fri": "Fri", "sat": "Sat", "sun": "Sun"}
 }

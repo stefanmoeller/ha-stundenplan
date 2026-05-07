@@ -1,6 +1,9 @@
 {
   "name": "Stundenplan",
+  "content_in_root": false,
   "render_readme": true,
-  "domains": ["sensor"],
+  "domains": [
+    "sensor"
+  ],
   "homeassistant": "2024.6.0"
 }
