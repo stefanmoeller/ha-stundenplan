@@ -80,10 +80,11 @@ class SchoolScheduleCard extends HTMLElement {
         ha-card.clickable { cursor: pointer; }
         .today-header {
           display: flex;
-          align-items: baseline;
+          align-items: center;
           justify-content: space-between;
           gap: 12px;
           margin-bottom: 14px;
+          flex-wrap: nowrap;
         }
         .headline {
           font-size: 1.1rem;
@@ -98,6 +99,15 @@ class SchoolScheduleCard extends HTMLElement {
           margin-bottom: 0;
           text-align: right;
           white-space: nowrap;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          flex: 0 0 auto;
+        }
+        .subline ha-icon {
+          --mdc-icon-size: 16px;
+          width: 16px;
+          height: 16px;
         }
         .day-nav {
           display: inline-flex;
@@ -220,10 +230,15 @@ class SchoolScheduleCard extends HTMLElement {
   }
 
   getTodayDayKeys(attributes) {
-    const days = attributes?.days || {};
-    const schoolDays = attributes?.school_days || [];
-    const keys = schoolDays.filter((day) => day in days);
-    return keys.length ? keys : Object.keys(days);
+    const configured = Array.isArray(attributes?.school_days)
+      ? attributes.school_days
+      : [];
+    if (configured.length > 1) {
+      return configured;
+    }
+
+    const orderedWeek = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+    return orderedWeek;
   }
 
   getTodaySelectedDay(attributes) {
@@ -256,7 +271,11 @@ class SchoolScheduleCard extends HTMLElement {
     const a = state.attributes || {};
     const selectedDayKey = this.getTodaySelectedDay(a);
     const selectedDay = selectedDayKey ? a.days?.[selectedDayKey] : null;
-    const dayName = selectedDay?.name || a.weekday_name || this.localize("common.today");
+    const dayName =
+      selectedDay?.name ||
+      a.weekday_names?.[selectedDayKey] ||
+      a.weekday_name ||
+      this.localize("common.today");
     const schoolEnd = selectedDay?.school_end || "-";
     const lessons = selectedDay?.lessons || [];
     const isCurrentDay = selectedDayKey && selectedDayKey === a.weekday;
@@ -270,15 +289,15 @@ class SchoolScheduleCard extends HTMLElement {
       : "";
 
     if (showFreeDay) {
-      return `<div class="today-header"><div class="headline">${this.escape(dayName)}${nav}</div><div class="subline">${this.escape(this.localize("common.school_end"))}: ${this.escape(schoolEnd)}</div></div><div class="free">${this.escape(this.localize("common.free_day"))}${a.free_reason ? `: ${this.escape(a.free_reason)}` : ""}</div>`;
+      return `<div class="today-header"><div class="headline">${this.escape(dayName)}${nav}</div><div class="subline"><ha-icon icon="mdi:clock-end"></ha-icon><span>${this.escape(schoolEnd)}</span></div></div><div class="free">${this.escape(this.localize("common.free_day"))}${a.free_reason ? `: ${this.escape(a.free_reason)}` : ""}</div>`;
     }
     if (!selectedDay || !lessons.length) {
-      return `<div class="today-header"><div class="headline">${this.escape(dayName)}${nav}</div><div class="subline">${this.escape(this.localize("common.school_end"))}: ${this.escape(schoolEnd)}</div></div><div class="free">${this.escape(this.localize("common.no_lessons"))}</div>`;
+      return `<div class="today-header"><div class="headline">${this.escape(dayName)}${nav}</div><div class="subline"><ha-icon icon="mdi:clock-end"></ha-icon><span>${this.escape(schoolEnd)}</span></div></div><div class="free">${this.escape(this.localize("common.no_lessons"))}</div>`;
     }
     return `
       <div class="today-header">
         <div class="headline">${this.escape(dayName)}${nav}</div>
-        <div class="subline">${this.escape(this.localize("common.school_end"))}: ${this.escape(schoolEnd)}</div>
+        <div class="subline"><ha-icon icon="mdi:clock-end"></ha-icon><span>${this.escape(schoolEnd)}</span></div>
       </div>
       <div class="lesson-list">${lessons.map((lesson) => this.renderLesson(lesson, false)).join("")}</div>
     `;
