@@ -1,5 +1,5 @@
 const CARD_TYPE = "school-schedule-card";
-const CARD_VERSION = "0.1.6";
+const CARD_VERSION = "0.1.7";
 const DEFAULT_CONFIG = {
   mode: "today",
   title: "",
@@ -429,6 +429,28 @@ class SchoolScheduleCardEditor extends HTMLElement {
     ];
   }
 
+  _computeLabel(schema) {
+    const map = {
+      entity: this.localize("common.editor_entity", "Entity"),
+      mode: this.localize("common.editor_mode", "Mode"),
+      title: this.localize("common.editor_title", "Title"),
+      show_title: this.localize("common.editor_show_title", "Show title"),
+      show_day_navigation: this.localize(
+        "common.editor_show_day_navigation",
+        "Show day navigation in today mode"
+      ),
+      navigate_on_tap: this.localize(
+        "common.editor_tap_navigate",
+        "Tap action: navigate"
+      ),
+      navigation_path: this.localize(
+        "common.editor_navigation_path",
+        "Navigation path"
+      ),
+    };
+    return map[schema.name] || schema.name;
+  }
+
   _emitConfig(config) {
     this._config = config;
     this.dispatchEvent(
@@ -440,46 +462,85 @@ class SchoolScheduleCardEditor extends HTMLElement {
     );
   }
 
-  _setValue(key, value) {
-    const config = { ...(this._config || {}) };
-    if (value === "" || value === null || value === undefined) {
-      delete config[key];
-    } else {
-      config[key] = value;
-    }
-    this._emitConfig(config);
+  _formSchema() {
+    return [
+      {
+        name: "entity",
+        required: true,
+        selector: {
+          entity: {
+            include_entities: this._entityOptions(),
+          },
+        },
+      },
+      {
+        name: "mode",
+        selector: {
+          select: {
+            mode: "dropdown",
+            options: this._modeOptions(),
+          },
+        },
+      },
+      { name: "title", selector: { text: {} } },
+      { name: "show_title", selector: { boolean: {} } },
+      { name: "show_day_navigation", selector: { boolean: {} } },
+      { name: "navigate_on_tap", selector: { boolean: {} } },
+      { name: "navigation_path", selector: { text: {} } },
+    ];
   }
 
-  _setBoolean(key, enabled) {
-    const config = { ...(this._config || {}) };
-    if (enabled) {
-      config[key] = true;
-    } else {
-      delete config[key];
-    }
-    this._emitConfig(config);
+  _formData() {
+    return {
+      entity: this._config?.entity || "",
+      mode: this._config?.mode || "today",
+      title: this._config?.title || "",
+      show_title: this._config?.show_title !== false,
+      show_day_navigation: this._config?.show_day_navigation === true,
+      navigate_on_tap: this._config?.tap_action?.action === "navigate",
+      navigation_path:
+        this._config?.tap_action?.navigation_path || "/lovelace/stundenplan",
+    };
   }
 
-  _setTapNavigate(enabled) {
-    const config = { ...(this._config || {}) };
-    if (enabled) {
-      const current = config.tap_action || {};
+  _valueChanged(event) {
+    if (!this._config || !this._hass) {
+      return;
+    }
+
+    const value = event.detail.value || {};
+    const config = { ...this._config };
+
+    config.entity = value.entity || config.entity;
+    config.mode = value.mode || "today";
+
+    if (value.title) {
+      config.title = value.title;
+    } else {
+      delete config.title;
+    }
+
+    if (value.show_title === false) {
+      config.show_title = false;
+    } else {
+      delete config.show_title;
+    }
+
+    if (value.show_day_navigation) {
+      config.show_day_navigation = true;
+    } else {
+      delete config.show_day_navigation;
+    }
+
+    if (value.navigate_on_tap) {
       config.tap_action = {
         action: "navigate",
-        navigation_path: current.navigation_path || "/lovelace/stundenplan",
+        navigation_path: value.navigation_path || "/lovelace/stundenplan",
       };
     } else {
       delete config.tap_action;
     }
-    this._emitConfig(config);
-  }
 
-  _setNavigationPath(value) {
-    const config = { ...(this._config || {}) };
-    const tap = { ...(config.tap_action || {}) };
-    tap.action = "navigate";
-    tap.navigation_path = value || "/lovelace/stundenplan";
-    config.tap_action = tap;
     this._emitConfig(config);
   }
 
@@ -492,103 +553,26 @@ class SchoolScheduleCardEditor extends HTMLElement {
       this.attachShadow({ mode: "open" });
     }
 
-    const entities = this._entityOptions();
-    const mode = this._config.mode || "today";
-    const entity = this._config.entity || "";
-    const title = this._config.title ?? "";
-    const showTitle = this._config.show_title !== false;
-    const showDayNavigation = this._config.show_day_navigation === true;
-    const isNavigate = this._config.tap_action?.action === "navigate";
-    const navigationPath = this._config.tap_action?.navigation_path || "/lovelace/stundenplan";
-
     this.shadowRoot.innerHTML = `
       <style>
-        .wrap { display: flex; flex-direction: column; gap: 12px; }
-        label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
-        select, input[type="text"] {
-          height: 40px;
-          border: 1px solid var(--divider-color);
-          border-radius: 8px;
-          background: var(--card-background-color);
-          color: var(--primary-text-color);
-          padding: 0 10px;
-          font-size: 14px;
+        .wrap {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          padding: 4px 0;
         }
-        .check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
-        .check input { width: 16px; height: 16px; }
       </style>
-      <div class="wrap">
-        <label>
-          ${this.localize("common.editor_entity", "Entity")}
-          <select id="entity">
-            ${entities.map((item) => `<option value="${item}" ${item === entity ? "selected" : ""}>${item}</option>`).join("")}
-          </select>
-        </label>
-        <label>
-          ${this.localize("common.editor_mode", "Mode")}
-          <select id="mode">
-            ${this._modeOptions().map((item) => `<option value="${item.value}" ${item.value === mode ? "selected" : ""}>${item.label}</option>`).join("")}
-          </select>
-        </label>
-        <label>
-          ${this.localize("common.editor_title", "Title")}
-          <input id="title" type="text" value="${String(title).replace(/"/g, "&quot;")}" placeholder="${this.localize("common.card_title", "Stundenplan")}" />
-        </label>
-        <label class="check">
-          <input id="show_title" type="checkbox" ${showTitle ? "checked" : ""} />
-          <span>${this.localize("common.editor_show_title", "Show title")}</span>
-        </label>
-        <label class="check">
-          <input id="show_day_navigation" type="checkbox" ${showDayNavigation ? "checked" : ""} />
-          <span>${this.localize("common.editor_show_day_navigation", "Show day navigation in today mode")}</span>
-        </label>
-        <label class="check">
-          <input id="tap_navigate" type="checkbox" ${isNavigate ? "checked" : ""} />
-          <span>${this.localize("common.editor_tap_navigate", "Tap action: navigate")}</span>
-        </label>
-        ${isNavigate ? `
-          <label>
-            ${this.localize("common.editor_navigation_path", "Navigation path")}
-            <input id="navigation_path" type="text" value="${String(navigationPath).replace(/"/g, "&quot;")}" />
-          </label>
-        ` : ""}
-      </div>
+      <div class="wrap"></div>
     `;
 
-    const entityInput = this.shadowRoot.getElementById("entity");
-    entityInput?.addEventListener("change", (event) => {
-      this._setValue("entity", event.target.value);
-    });
-
-    const modeInput = this.shadowRoot.getElementById("mode");
-    modeInput?.addEventListener("change", (event) => {
-      this._setValue("mode", event.target.value);
-    });
-
-    const titleInput = this.shadowRoot.getElementById("title");
-    titleInput?.addEventListener("input", (event) => {
-      this._setValue("title", event.target.value.trim());
-    });
-
-    const showTitleInput = this.shadowRoot.getElementById("show_title");
-    showTitleInput?.addEventListener("change", (event) => {
-      this._setBoolean("show_title", event.target.checked);
-    });
-
-    const dayNavInput = this.shadowRoot.getElementById("show_day_navigation");
-    dayNavInput?.addEventListener("change", (event) => {
-      this._setBoolean("show_day_navigation", event.target.checked);
-    });
-
-    const tapNavigateInput = this.shadowRoot.getElementById("tap_navigate");
-    tapNavigateInput?.addEventListener("change", (event) => {
-      this._setTapNavigate(event.target.checked);
-    });
-
-    const pathInput = this.shadowRoot.getElementById("navigation_path");
-    pathInput?.addEventListener("input", (event) => {
-      this._setNavigationPath(event.target.value.trim());
-    });
+    const container = this.shadowRoot.querySelector(".wrap");
+    const form = document.createElement("ha-form");
+    form.hass = this._hass;
+    form.schema = this._formSchema();
+    form.data = this._formData();
+    form.computeLabel = (schema) => this._computeLabel(schema);
+    form.addEventListener("value-changed", (event) => this._valueChanged(event));
+    container?.appendChild(form);
   }
 }
 
@@ -602,7 +586,10 @@ if (!customElements.get("school-schedule-card-editor")) {
 if (!window.__stundenplanCardVersionLogged) {
   window.__stundenplanCardVersionLogged = true;
   console.info(
-    `[Stundenplan] ${CARD_TYPE} loaded (version: ${CARD_VERSION})`
+    "%c STUNDENPLAN-CARD %c VERSION %c " + CARD_VERSION + " ",
+    "background:#111;color:#f5b400;font-weight:700;padding:2px 6px;border-radius:2px 0 0 2px;",
+    "background:#2a2a2a;color:#fff;font-weight:700;padding:2px 6px;",
+    "background:#f57c00;color:#fff;font-weight:700;padding:2px 6px;border-radius:0 2px 2px 0;"
   );
 }
 

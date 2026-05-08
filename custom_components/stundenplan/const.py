@@ -6,7 +6,7 @@ from typing import Final
 
 DOMAIN: Final = "stundenplan"
 NAME: Final = "Stundenplan"
-VERSION: Final = "0.1.6"
+VERSION: Final = "0.1.7"
 
 FRONTEND_URL_BASE: Final = f"/{DOMAIN}"
 CARD_URL: Final = f"{FRONTEND_URL_BASE}/school-schedule-card.js"
