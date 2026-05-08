@@ -6,10 +6,11 @@ from typing import Final
 
 DOMAIN: Final = "stundenplan"
 NAME: Final = "Stundenplan"
-VERSION: Final = "0.1.5"
+VERSION: Final = "0.1.6"
 
 FRONTEND_URL_BASE: Final = f"/{DOMAIN}"
 CARD_URL: Final = f"{FRONTEND_URL_BASE}/school-schedule-card.js"
+CARD_URL_VERSIONED: Final = f"{CARD_URL}?v={VERSION}"
 DEFAULT_CHILD_NAME: Final = "Fritz"
 DEFAULT_SUBJECT_ICON: Final = "mdi:book-open-page-variant"
 DEFAULT_LESSON_COUNT: Final = 6
