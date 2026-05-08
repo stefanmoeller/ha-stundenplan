@@ -1,4 +1,5 @@
 const CARD_TYPE = "school-schedule-card";
+const CARD_VERSION = "0.1.5";
 const DEFAULT_CONFIG = {
   mode: "today",
   title: "",
@@ -596,6 +597,13 @@ if (!customElements.get(CARD_TYPE)) {
 }
 if (!customElements.get("school-schedule-card-editor")) {
   customElements.define("school-schedule-card-editor", SchoolScheduleCardEditor);
+}
+
+if (!window.__stundenplanCardVersionLogged) {
+  window.__stundenplanCardVersionLogged = true;
+  console.info(
+    `[Stundenplan] ${CARD_TYPE} loaded (version: ${CARD_VERSION})`
+  );
 }
 
 const globalHass = document.querySelector("home-assistant")?.hass;
