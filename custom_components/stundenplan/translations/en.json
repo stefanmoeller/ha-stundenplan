@@ -158,6 +158,17 @@
     "time": "Time",
     "previous_day": "Previous day",
     "next_day": "Next day",
-    "card_description": "Shows today's or the full school schedule."
+    "card_description": "Shows today's or the full school schedule.",
+    "editor_entity": "Entity",
+    "editor_mode": "Mode",
+    "editor_mode_today": "Today",
+    "editor_mode_table": "Table",
+    "editor_mode_cards": "Cards",
+    "editor_mode_card": "Card",
+    "editor_title": "Title",
+    "editor_show_title": "Show title",
+    "editor_show_day_navigation": "Show day navigation in today mode",
+    "editor_tap_navigate": "Tap action: navigate",
+    "editor_navigation_path": "Navigation path"
   }
 }

@@ -114,6 +114,17 @@
     "time": "Zeit",
     "previous_day": "Vorheriger Tag",
     "next_day": "Nächster Tag",
-    "card_description": "Zeigt den heutigen oder vollständigen Schulstundenplan an."
+    "card_description": "Zeigt den heutigen oder vollständigen Schulstundenplan an.",
+    "editor_entity": "Entität",
+    "editor_mode": "Modus",
+    "editor_mode_today": "Heute",
+    "editor_mode_table": "Tabelle",
+    "editor_mode_cards": "Karten",
+    "editor_mode_card": "Karte",
+    "editor_title": "Titel",
+    "editor_show_title": "Titel anzeigen",
+    "editor_show_day_navigation": "Tagesnavigation im Heute-Modus anzeigen",
+    "editor_tap_navigate": "Tap-Aktion: Navigieren",
+    "editor_navigation_path": "Navigationspfad"
   }
 }
