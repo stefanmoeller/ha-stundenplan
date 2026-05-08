@@ -134,6 +134,7 @@ tap_action:
 | `mode` | string | `today` | `today`, `table`, `cards` oder `card` |
 | `title` | string | `Stundenplan` | Titel der Lovelace Card |
 | `show_title` | boolean | `true` | blendet den Titel ein oder aus |
+| `show_day_navigation` | boolean | `false` | zeigt im `today`-Modus `<` und `>` zum Tagwechsel |
 | `tap_action` | object | optional | unterstützt `navigate` mit `navigation_path` |
 
 ## Sensor-Attribute

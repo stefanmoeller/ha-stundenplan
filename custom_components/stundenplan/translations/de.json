@@ -111,7 +111,9 @@
     "missing_schedule_data": "Keine Stundenplandaten gefunden.",
     "entity_not_found": "Entität nicht gefunden",
     "unknown_mode": "Unbekannter Modus",
-    "time": "Zeit"
+    "time": "Zeit",
+    "previous_day": "Vorheriger Tag",
+    "next_day": "Nächster Tag"
   },
   "card": {
     "name": "Stundenplan Karte",
