@@ -157,10 +157,7 @@
     "unknown_mode": "Unknown mode",
     "time": "Time",
     "previous_day": "Previous day",
-    "next_day": "Next day"
-  },
-  "card": {
-    "name": "School schedule card",
-    "description": "Shows today's or the full school schedule."
+    "next_day": "Next day",
+    "card_description": "Shows today's or the full school schedule."
   }
 }

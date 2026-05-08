@@ -365,9 +365,9 @@ if (!customElements.get(CARD_TYPE)) {
 
 const globalHass = document.querySelector("home-assistant")?.hass;
 const cardName =
-  globalHass?.localize?.("component.stundenplan.card.name") || CARD_TYPE;
+  globalHass?.localize?.("component.stundenplan.common.card_title") || CARD_TYPE;
 const cardDescription =
-  globalHass?.localize?.("component.stundenplan.card.description") || CARD_TYPE;
+  globalHass?.localize?.("component.stundenplan.common.card_description") || CARD_TYPE;
 
 window.customCards = window.customCards || [];
 if (!window.customCards.some((card) => card.type === CARD_TYPE)) {
