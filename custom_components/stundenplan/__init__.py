@@ -10,7 +10,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EVENT_HOMEASSISTANT_STARTED, Platform
 from homeassistant.core import CoreState, HomeAssistant
 
-from .const import CARD_URL, DOMAIN, FRONTEND_URL_BASE
+from .const import CARD_URL, CARD_URL_VERSIONED, DOMAIN, FRONTEND_URL_BASE
 
 PLATFORMS: tuple[Platform, ...] = (Platform.SENSOR,)
 
@@ -149,7 +149,29 @@ async def _async_ensure_lovelace_resource(hass: HomeAssistant) -> None:
         return
 
     existing_resources = await _async_list_resources(resources)
-    if any(_resource_matches(item.get("url")) for item in existing_resources):
+    matching = next(
+        (item for item in existing_resources if _resource_matches(item.get("url"))),
+        None,
+    )
+    if matching is not None:
+        current_url = str(matching.get("url") or "")
+        if current_url != CARD_URL_VERSIONED:
+            update_item = getattr(resources, "async_update_item", None)
+            if callable(update_item):
+                try:
+                    await update_item(
+                        matching["id"],
+                        {"res_type": "module", "url": CARD_URL_VERSIONED},
+                    )
+                    _LOGGER.info(
+                        "Updated Lovelace resource for Stundenplan card to %s",
+                        CARD_URL_VERSIONED,
+                    )
+                except Exception as err:  # pragma: no cover - defensive runtime guard
+                    _LOGGER.warning(
+                        "Could not update Lovelace resource version automatically: %s",
+                        err,
+                    )
         await _async_dismiss_resource_notification(hass)
         return
 
@@ -162,8 +184,11 @@ async def _async_ensure_lovelace_resource(hass: HomeAssistant) -> None:
         return
 
     try:
-        await create_item({"res_type": "module", "url": CARD_URL})
-        _LOGGER.info("Registered Lovelace resource for Stundenplan card: %s", CARD_URL)
+        await create_item({"res_type": "module", "url": CARD_URL_VERSIONED})
+        _LOGGER.info(
+            "Registered Lovelace resource for Stundenplan card: %s",
+            CARD_URL_VERSIONED,
+        )
         await _async_dismiss_resource_notification(hass)
     except Exception as err:  # pragma: no cover - defensive runtime guard
         _LOGGER.warning("Could not register Lovelace resource automatically: %s", err)
