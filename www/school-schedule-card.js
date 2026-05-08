@@ -92,7 +92,7 @@ class SchoolScheduleCard extends HTMLElement {
           margin-bottom: 0;
           display: inline-flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
         }
         .subline {
           color: var(--secondary-text-color);
@@ -112,24 +112,31 @@ class SchoolScheduleCard extends HTMLElement {
         .day-nav {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          gap: 4px;
         }
         .day-nav-btn {
           border: 1px solid var(--divider-color);
-          background: var(--card-background-color);
-          color: var(--primary-text-color);
-          border-radius: 6px;
-          width: 24px;
-          height: 24px;
-          line-height: 20px;
+          background: transparent;
+          color: var(--secondary-text-color);
+          border-radius: 5px;
+          width: 20px;
+          height: 20px;
+          line-height: 16px;
           text-align: center;
           cursor: pointer;
           padding: 0;
-          font-weight: 700;
-          font-size: 14px;
+          font-weight: 600;
+          font-size: 12px;
+          transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
         }
         .day-nav-btn:hover {
-          background: var(--secondary-background-color);
+          background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+          color: var(--primary-text-color);
+          border-color: color-mix(in srgb, var(--primary-color) 35%, var(--divider-color));
+        }
+        .day-nav-btn:focus-visible {
+          outline: 1px solid var(--primary-color);
+          outline-offset: 1px;
         }
         .free { padding: 12px; border-radius: 8px; background: var(--secondary-background-color); }
         .lesson-list { display: flex; flex-direction: column; gap: 9px; }
