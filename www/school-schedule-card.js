@@ -128,6 +128,14 @@ class SchoolScheduleCard extends HTMLElement {
           font-weight: 600;
           font-size: 12px;
           transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .day-nav-btn ha-icon {
+          --mdc-icon-size: 14px;
+          width: 14px;
+          height: 14px;
         }
         .day-nav-btn:hover {
           background: color-mix(in srgb, var(--primary-color) 10%, transparent);
@@ -290,21 +298,21 @@ class SchoolScheduleCard extends HTMLElement {
     const showNav = this.config.show_day_navigation && this.getTodayDayKeys(a).length > 1;
     const nav = showNav
       ? `<span class="day-nav">
-          <button class="day-nav-btn day-nav-prev" aria-label="${this.escape(this.localize("common.previous_day"))}" type="button">&lt;</button>
-          <button class="day-nav-btn day-nav-next" aria-label="${this.escape(this.localize("common.next_day"))}" type="button">&gt;</button>
+          <button class="day-nav-btn day-nav-prev" aria-label="${this.escape(this.localize("common.previous_day"))}" type="button"><ha-icon icon="mdi:chevron-left"></ha-icon></button>
+          <button class="day-nav-btn day-nav-next" aria-label="${this.escape(this.localize("common.next_day"))}" type="button"><ha-icon icon="mdi:chevron-right"></ha-icon></button>
         </span>`
       : "";
 
     if (showFreeDay) {
-      return `<div class="today-header"><div class="headline">${this.escape(dayName)}${nav}</div><div class="subline"><ha-icon icon="mdi:clock-end"></ha-icon><span>${this.escape(schoolEnd)}</span></div></div><div class="free">${this.escape(this.localize("common.free_day"))}${a.free_reason ? `: ${this.escape(a.free_reason)}` : ""}</div>`;
+      return `<div class="today-header"><div class="headline">${this.escape(dayName)}${nav}</div><div class="subline"><ha-icon icon="mdi:clock-check-outline"></ha-icon><span>${this.escape(schoolEnd)}</span></div></div><div class="free">${this.escape(this.localize("common.free_day"))}${a.free_reason ? `: ${this.escape(a.free_reason)}` : ""}</div>`;
     }
     if (!selectedDay || !lessons.length) {
-      return `<div class="today-header"><div class="headline">${this.escape(dayName)}${nav}</div><div class="subline"><ha-icon icon="mdi:clock-end"></ha-icon><span>${this.escape(schoolEnd)}</span></div></div><div class="free">${this.escape(this.localize("common.no_lessons"))}</div>`;
+      return `<div class="today-header"><div class="headline">${this.escape(dayName)}${nav}</div><div class="subline"><ha-icon icon="mdi:clock-check-outline"></ha-icon><span>${this.escape(schoolEnd)}</span></div></div><div class="free">${this.escape(this.localize("common.no_lessons"))}</div>`;
     }
     return `
       <div class="today-header">
         <div class="headline">${this.escape(dayName)}${nav}</div>
-        <div class="subline"><ha-icon icon="mdi:clock-end"></ha-icon><span>${this.escape(schoolEnd)}</span></div>
+        <div class="subline"><ha-icon icon="mdi:clock-check-outline"></ha-icon><span>${this.escape(schoolEnd)}</span></div>
       </div>
       <div class="lesson-list">${lessons.map((lesson) => this.renderLesson(lesson, false)).join("")}</div>
     `;
