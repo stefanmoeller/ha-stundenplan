@@ -146,6 +146,7 @@
     }
   },
   "common": {
+    "card_title": "Stundenplan",
     "today": "Today",
     "school_end": "School ends",
     "free_day": "No school today",
@@ -155,5 +156,9 @@
     "entity_not_found": "Entity not found",
     "unknown_mode": "Unknown mode",
     "time": "Time"
+  },
+  "card": {
+    "name": "School schedule card",
+    "description": "Shows today's or the full school schedule."
   }
 }

@@ -102,6 +102,7 @@
     "error": {"required": "Dieses Feld ist erforderlich."}
   },
   "common": {
+    "card_title": "Stundenplan",
     "today": "Heute",
     "school_end": "Schulende",
     "free_day": "Heute schulfrei",
@@ -111,5 +112,9 @@
     "entity_not_found": "Entität nicht gefunden",
     "unknown_mode": "Unbekannter Modus",
     "time": "Zeit"
+  },
+  "card": {
+    "name": "Stundenplan Karte",
+    "description": "Zeigt den heutigen oder vollständigen Schulstundenplan an."
   }
 }

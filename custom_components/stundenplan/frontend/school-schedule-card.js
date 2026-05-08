@@ -1,7 +1,7 @@
 const CARD_TYPE = "school-schedule-card";
 const DEFAULT_CONFIG = {
   mode: "today",
-  title: "Stundenplan",
+  title: "",
   show_title: true,
 };
 const SUPPORTED_MODES = new Set(["today", "table", "cards", "card"]);
@@ -11,11 +11,13 @@ class SchoolScheduleCard extends HTMLElement {
     const entity = Object.keys(hass?.states || {}).find((entityId) =>
       entityId.startsWith("sensor.stundenplan_")
     );
+    const title =
+      hass?.localize?.("component.stundenplan.common.card_title") || "";
 
     return {
       entity,
       mode: DEFAULT_CONFIG.mode,
-      title: DEFAULT_CONFIG.title,
+      title,
     };
   }
 
@@ -36,7 +38,7 @@ class SchoolScheduleCard extends HTMLElement {
     return this.config?.mode === "table" ? 5 : 3;
   }
 
-  localize(key, fallback, vars = {}) {
+  localize(key, fallback = "", vars = {}) {
     const value = this._hass?.localize?.(`component.stundenplan.${key}`, vars) || fallback;
     return Object.entries(vars).reduce((text, [name, val]) => String(text).replace(`{${name}}`, val), value);
   }
@@ -56,20 +58,21 @@ class SchoolScheduleCard extends HTMLElement {
 
     const state = this._hass.states[this.config.entity];
     if (!state) {
-      this.innerHTML = `<ha-card><div class="card-content">${this.escape(this.localize("common.entity_not_found", "Entity not found"))}: ${this.escape(this.config.entity)}</div></ha-card>`;
+      this.innerHTML = `<ha-card><div class="card-content">${this.escape(this.localize("common.entity_not_found"))}: ${this.escape(this.config.entity)}</div></ha-card>`;
       return;
     }
 
     const mode = this.config.mode || "today";
     const clickable = this.config.tap_action?.action === "navigate";
+    const title = this.config.title || this.localize("common.card_title");
     this.innerHTML = `
       <ha-card class="${clickable ? "clickable" : ""}" ${clickable ? 'role="button" tabindex="0"' : ""}>
-        ${this.config.show_title !== false && this.config.title ? `<div class="card-header">${this.escape(this.config.title)}</div>` : ""}
+        ${this.config.show_title !== false && title ? `<div class="card-header">${this.escape(title)}</div>` : ""}
         <div class="card-content">
           ${mode === "today" ? this.renderToday(state) : ""}
           ${mode === "table" ? this.renderTable(state) : ""}
           ${(mode === "cards" || mode === "card") ? this.renderCards(state) : ""}
-          ${!SUPPORTED_MODES.has(mode) ? `<div class="free">${this.escape(this.localize("common.unknown_mode", "Unknown mode"))}: ${this.escape(mode)}</div>` : ""}
+          ${!SUPPORTED_MODES.has(mode) ? `<div class="free">${this.escape(this.localize("common.unknown_mode"))}: ${this.escape(mode)}</div>` : ""}
         </div>
       </ha-card>
       <style>
@@ -161,16 +164,16 @@ class SchoolScheduleCard extends HTMLElement {
 
   renderToday(state) {
     const a = state.attributes || {};
-    const weekday = a.weekday_name || this.localize("common.today", "Today");
+    const weekday = a.weekday_name || this.localize("common.today");
     if (a.is_free_day) {
-      return `<div class="headline">${this.escape(weekday)}</div><div class="free">${this.escape(this.localize("common.free_day", "No school today"))}${a.free_reason ? `: ${this.escape(a.free_reason)}` : ""}</div>`;
+      return `<div class="headline">${this.escape(weekday)}</div><div class="free">${this.escape(this.localize("common.free_day"))}${a.free_reason ? `: ${this.escape(a.free_reason)}` : ""}</div>`;
     }
     if (!a.is_school_day || !a.lessons?.length) {
-      return `<div class="headline">${this.escape(weekday)}</div><div class="free">${this.escape(this.localize("common.no_lessons", "No lessons"))}</div>`;
+      return `<div class="headline">${this.escape(weekday)}</div><div class="free">${this.escape(this.localize("common.no_lessons"))}</div>`;
     }
     return `
       <div class="headline">${this.escape(weekday)}</div>
-      <div class="subline">${this.escape(this.localize("common.school_end", "School ends"))}: ${this.escape(a.school_end || "-")} Uhr</div>
+      <div class="subline">${this.escape(this.localize("common.school_end"))}: ${this.escape(a.school_end || "-")}</div>
       <div class="lesson-list">${a.lessons.map((lesson) => this.renderLesson(lesson, false)).join("")}</div>
     `;
   }
@@ -181,11 +184,11 @@ class SchoolScheduleCard extends HTMLElement {
     const schoolDays = a.school_days || [];
     const days = a.days || {};
     const maxRows = Number(a.lesson_count || lessonTimes.length || 0);
-    if (!maxRows || !schoolDays.length) return `<div class="free">${this.escape(this.localize("common.missing_schedule_data", "No timetable data found."))}</div>`;
+    if (!maxRows || !schoolDays.length) return `<div class="free">${this.escape(this.localize("common.missing_schedule_data"))}</div>`;
     return `
       <div class="table-wrap">
         <table>
-          <thead><tr><th>${this.escape(this.localize("common.time", "Time"))}</th>${schoolDays.map((day) => `<th>${this.escape(days[day]?.name || a.weekday_names?.[day] || day)}</th>`).join("")}</tr></thead>
+          <thead><tr><th>${this.escape(this.localize("common.time"))}</th>${schoolDays.map((day) => `<th>${this.escape(days[day]?.name || a.weekday_names?.[day] || day)}</th>`).join("")}</tr></thead>
           <tbody>
             ${Array.from({ length: maxRows }, (_, i) => `
               <tr>
@@ -208,7 +211,7 @@ class SchoolScheduleCard extends HTMLElement {
     const a = state.attributes || {};
     const schoolDays = a.school_days || [];
     const days = a.days || {};
-    if (!schoolDays.length) return `<div class="free">${this.escape(this.localize("common.no_school_days", "No school days configured."))}</div>`;
+    if (!schoolDays.length) return `<div class="free">${this.escape(this.localize("common.no_school_days"))}</div>`;
     return `
       <div class="cards">
         ${schoolDays.map((day) => {
@@ -216,8 +219,8 @@ class SchoolScheduleCard extends HTMLElement {
           const lessons = d.lessons || [];
           return `
             <div class="day-card">
-              <div class="day-header"><div class="day-title">${this.escape(d.name || a.weekday_names?.[day] || day)}</div><div class="badge">${this.escape(this.localize("common.school_end", "School ends"))}: ${this.escape(d.school_end || "-")} Uhr</div></div>
-              <div class="lesson-list">${lessons.length ? lessons.map((lesson) => this.renderLesson(lesson, false)).join("") : `<span class="empty">${this.escape(this.localize("common.no_lessons", "No lessons"))}</span>`}</div>
+              <div class="day-header"><div class="day-title">${this.escape(d.name || a.weekday_names?.[day] || day)}</div><div class="badge">${this.escape(this.localize("common.school_end"))}: ${this.escape(d.school_end || "-")}</div></div>
+              <div class="lesson-list">${lessons.length ? lessons.map((lesson) => this.renderLesson(lesson, false)).join("") : `<span class="empty">${this.escape(this.localize("common.no_lessons"))}</span>`}</div>
             </div>
           `;
         }).join("")}
@@ -254,11 +257,17 @@ if (!customElements.get(CARD_TYPE)) {
   customElements.define(CARD_TYPE, SchoolScheduleCard);
 }
 
+const globalHass = document.querySelector("home-assistant")?.hass;
+const cardName =
+  globalHass?.localize?.("component.stundenplan.card.name") || CARD_TYPE;
+const cardDescription =
+  globalHass?.localize?.("component.stundenplan.card.description") || CARD_TYPE;
+
 window.customCards = window.customCards || [];
 if (!window.customCards.some((card) => card.type === CARD_TYPE)) {
   window.customCards.push({
     type: CARD_TYPE,
-    name: "Stundenplan Karte",
-    description: "Zeigt den heutigen oder vollständigen Schulstundenplan an."
+    name: cardName,
+    description: cardDescription
   });
 }
