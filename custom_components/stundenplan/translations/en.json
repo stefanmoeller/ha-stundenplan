@@ -155,7 +155,5 @@
     "entity_not_found": "Entity not found",
     "unknown_mode": "Unknown mode",
     "time": "Time"
-  },
-  "weekdays": {"mon": "Monday", "tue": "Tuesday", "wed": "Wednesday", "thu": "Thursday", "fri": "Friday", "sat": "Saturday", "sun": "Sunday"},
-  "weekdays_short": {"mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu", "fri": "Fri", "sat": "Sat", "sun": "Sun"}
+  }
 }

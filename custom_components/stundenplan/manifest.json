@@ -6,7 +6,8 @@
   ],
   "config_flow": true,
   "dependencies": [
-    "calendar"
+    "calendar",
+    "http"
   ],
   "documentation": "https://github.com/stefanmoeller/ha-stundenplan",
   "iot_class": "local_polling",
