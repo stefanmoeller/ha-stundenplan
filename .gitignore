@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Home Assistant local data
+.storage/
+deps/
+home-assistant_v2.db*
+home-assistant.log*
+
+# Editors
+.idea/
+.vscode/
+
+# Packages
+*.zip

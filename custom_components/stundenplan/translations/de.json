@@ -4,7 +4,7 @@
     "step": {
       "user": {
         "title": "Allgemeine Einstellungen",
-        "description": "Lege die Basisdaten des Stundenplans fest.",
+        "description": "Konfiguriere die Grundeinstellungen für diesen Stundenplan.",
         "data": {
           "child_name": "Name des Stundenplans",
           "lesson_count": "Max. Anzahl der Stunden",
@@ -14,7 +14,7 @@
       },
       "lesson_times": {
         "title": "Stundenzeiten",
-        "description": "Lege fest, wann jede Stunde beginnt und endet.",
+        "description": "Konfiguriere Beginn und Ende jeder Unterrichtsstunde.",
         "data": {
           "lesson_1_start": "Stunde 1: von",
           "lesson_1_end": "Stunde 1: bis",
@@ -44,48 +44,29 @@
       },
       "subject_count": {
         "title": "Schulfächer",
-        "description": "Lege fest, wie viele unterschiedliche Schulfächer du konfigurieren möchtest.",
-        "data": {
-          "subject_count": "Anzahl der unterschiedlichen Schulfächer"
-        }
+        "description": "Lege fest, wie viele unterschiedliche Schulfächer verfügbar sein sollen.",
+        "data": {"subject_count": "Anzahl der unterschiedlichen Schulfächer"}
       },
-      "subject_detail": {
-        "title": "Fach {number} von {total}",
+      "subject": {
+        "title": "Fach {current} von {total}",
         "description": "Bearbeite Name, Icon und Farbe dieses Fachs.",
-        "data": {
-          "subject_name": "Name",
-          "subject_icon": "Icon",
-          "subject_color": "Farbe"
-        }
+        "data": {"name": "Name", "icon": "Icon", "color": "Farbe"}
       },
-      "weekday": {
+      "day_plan": {
         "title": "{day}",
-        "description": "Wähle für jede Stunde das passende Fach aus.",
+        "description": "Wähle die Schulfächer für diesen Wochentag aus.",
         "data": {
-          "lesson_1_subject": "Stunde 1",
-          "lesson_2_subject": "Stunde 2",
-          "lesson_3_subject": "Stunde 3",
-          "lesson_4_subject": "Stunde 4",
-          "lesson_5_subject": "Stunde 5",
-          "lesson_6_subject": "Stunde 6",
-          "lesson_7_subject": "Stunde 7",
-          "lesson_8_subject": "Stunde 8",
-          "lesson_9_subject": "Stunde 9",
-          "lesson_10_subject": "Stunde 10",
-          "lesson_11_subject": "Stunde 11",
-          "lesson_12_subject": "Stunde 12"
+          "lesson_1": "Stunde 1", "lesson_2": "Stunde 2", "lesson_3": "Stunde 3", "lesson_4": "Stunde 4", "lesson_5": "Stunde 5", "lesson_6": "Stunde 6", "lesson_7": "Stunde 7", "lesson_8": "Stunde 8", "lesson_9": "Stunde 9", "lesson_10": "Stunde 10", "lesson_11": "Stunde 11", "lesson_12": "Stunde 12"
         }
       }
     },
-    "abort": {
-      "already_configured": "Dieser Stundenplan ist bereits konfiguriert."
-    }
+    "error": {"required": "Dieses Feld ist erforderlich."}
   },
   "options": {
     "step": {
       "user": {
         "title": "Allgemeine Einstellungen",
-        "description": "Passe die Basisdaten des Stundenplans an.",
+        "description": "Bearbeite die Grundeinstellungen für diesen Stundenplan.",
         "data": {
           "child_name": "Name des Stundenplans",
           "lesson_count": "Max. Anzahl der Stunden",
@@ -95,135 +76,40 @@
       },
       "lesson_times": {
         "title": "Stundenzeiten",
-        "description": "Passe Beginn und Ende jeder Stunde an.",
+        "description": "Konfiguriere Beginn und Ende jeder Unterrichtsstunde.",
         "data": {
-          "lesson_1_start": "Stunde 1: von",
-          "lesson_1_end": "Stunde 1: bis",
-          "lesson_2_start": "Stunde 2: von",
-          "lesson_2_end": "Stunde 2: bis",
-          "lesson_3_start": "Stunde 3: von",
-          "lesson_3_end": "Stunde 3: bis",
-          "lesson_4_start": "Stunde 4: von",
-          "lesson_4_end": "Stunde 4: bis",
-          "lesson_5_start": "Stunde 5: von",
-          "lesson_5_end": "Stunde 5: bis",
-          "lesson_6_start": "Stunde 6: von",
-          "lesson_6_end": "Stunde 6: bis",
-          "lesson_7_start": "Stunde 7: von",
-          "lesson_7_end": "Stunde 7: bis",
-          "lesson_8_start": "Stunde 8: von",
-          "lesson_8_end": "Stunde 8: bis",
-          "lesson_9_start": "Stunde 9: von",
-          "lesson_9_end": "Stunde 9: bis",
-          "lesson_10_start": "Stunde 10: von",
-          "lesson_10_end": "Stunde 10: bis",
-          "lesson_11_start": "Stunde 11: von",
-          "lesson_11_end": "Stunde 11: bis",
-          "lesson_12_start": "Stunde 12: von",
-          "lesson_12_end": "Stunde 12: bis"
+          "lesson_1_start": "Stunde 1: von", "lesson_1_end": "Stunde 1: bis", "lesson_2_start": "Stunde 2: von", "lesson_2_end": "Stunde 2: bis", "lesson_3_start": "Stunde 3: von", "lesson_3_end": "Stunde 3: bis", "lesson_4_start": "Stunde 4: von", "lesson_4_end": "Stunde 4: bis", "lesson_5_start": "Stunde 5: von", "lesson_5_end": "Stunde 5: bis", "lesson_6_start": "Stunde 6: von", "lesson_6_end": "Stunde 6: bis", "lesson_7_start": "Stunde 7: von", "lesson_7_end": "Stunde 7: bis", "lesson_8_start": "Stunde 8: von", "lesson_8_end": "Stunde 8: bis", "lesson_9_start": "Stunde 9: von", "lesson_9_end": "Stunde 9: bis", "lesson_10_start": "Stunde 10: von", "lesson_10_end": "Stunde 10: bis", "lesson_11_start": "Stunde 11: von", "lesson_11_end": "Stunde 11: bis", "lesson_12_start": "Stunde 12: von", "lesson_12_end": "Stunde 12: bis"
         }
       },
       "subject_count": {
         "title": "Schulfächer",
-        "description": "Passe die Anzahl der unterschiedlichen Schulfächer an.",
-        "data": {
-          "subject_count": "Anzahl der unterschiedlichen Schulfächer"
-        }
+        "description": "Lege fest, wie viele unterschiedliche Schulfächer verfügbar sein sollen.",
+        "data": {"subject_count": "Anzahl der unterschiedlichen Schulfächer"}
       },
-      "subject_detail": {
-        "title": "Fach {number} von {total}",
+      "subject": {
+        "title": "Fach {current} von {total}",
         "description": "Bearbeite Name, Icon und Farbe dieses Fachs.",
-        "data": {
-          "subject_name": "Name",
-          "subject_icon": "Icon",
-          "subject_color": "Farbe"
-        }
+        "data": {"name": "Name", "icon": "Icon", "color": "Farbe"}
       },
-      "weekday": {
+      "day_plan": {
         "title": "{day}",
-        "description": "Wähle für jede Stunde das passende Fach aus.",
+        "description": "Wähle die Schulfächer für diesen Wochentag aus.",
         "data": {
-          "lesson_1_subject": "Stunde 1",
-          "lesson_2_subject": "Stunde 2",
-          "lesson_3_subject": "Stunde 3",
-          "lesson_4_subject": "Stunde 4",
-          "lesson_5_subject": "Stunde 5",
-          "lesson_6_subject": "Stunde 6",
-          "lesson_7_subject": "Stunde 7",
-          "lesson_8_subject": "Stunde 8",
-          "lesson_9_subject": "Stunde 9",
-          "lesson_10_subject": "Stunde 10",
-          "lesson_11_subject": "Stunde 11",
-          "lesson_12_subject": "Stunde 12"
+          "lesson_1": "Stunde 1", "lesson_2": "Stunde 2", "lesson_3": "Stunde 3", "lesson_4": "Stunde 4", "lesson_5": "Stunde 5", "lesson_6": "Stunde 6", "lesson_7": "Stunde 7", "lesson_8": "Stunde 8", "lesson_9": "Stunde 9", "lesson_10": "Stunde 10", "lesson_11": "Stunde 11", "lesson_12": "Stunde 12"
         }
       }
-    }
-  },
-  "selector": {
-    "calendar": {
-      "none": "Kein Kalender"
     },
-    "subject": {
-      "free": "Keine Stunde / frei"
-    }
+    "error": {"required": "Dieses Feld ist erforderlich."}
   },
   "common": {
     "today": "Heute",
     "school_end": "Schulende",
-    "school_end_today": "Schulende heute",
-    "no_lessons": "Kein Unterricht",
     "free_day": "Heute schulfrei",
-    "unknown_mode": "Unbekannter Modus",
-    "entity_not_found": "Entity nicht gefunden",
+    "no_lessons": "Keine Stunden",
+    "no_school_days": "Keine Schultage konfiguriert.",
     "missing_schedule_data": "Keine Stundenplandaten gefunden.",
-    "no_school_days": "Keine Schultage konfiguriert."
-  },
-  "weekdays": {
-    "mon": "Montag",
-    "tue": "Dienstag",
-    "wed": "Mittwoch",
-    "thu": "Donnerstag",
-    "fri": "Freitag",
-    "sat": "Samstag",
-    "sun": "Sonntag"
-  },
-  "weekdays_short": {
-    "mon": "Mo",
-    "tue": "Di",
-    "wed": "Mi",
-    "thu": "Do",
-    "fri": "Fr",
-    "sat": "Sa",
-    "sun": "So"
-  },
-  "colors": {
-    "primary": "Primärfarbe",
-    "accent": "Akzentfarbe",
-    "red": "Rot",
-    "pink": "Rosa",
-    "purple": "Violett",
-    "deep-purple": "Dunkelviolett",
-    "indigo": "Indigo",
-    "blue": "Blau",
-    "light-blue": "Hellblau",
-    "cyan": "Cyan",
-    "teal": "Türkis",
-    "green": "Grün",
-    "light-green": "Hellgrün",
-    "lime": "Limette",
-    "yellow": "Gelb",
-    "amber": "Bernstein",
-    "orange": "Orange",
-    "deep-orange": "Tieforange",
-    "brown": "Braun",
-    "grey": "Grau",
-    "blue-grey": "Blaugrau",
-    "black": "Schwarz",
-    "white": "Weiß",
-    "disabled": "Deaktiviert"
-  },
-  "card": {
-    "name": "Stundenplan Karte",
-    "description": "Zeigt den heutigen oder vollständigen Schulstundenplan an."
+    "entity_not_found": "Entität nicht gefunden",
+    "unknown_mode": "Unbekannter Modus",
+    "time": "Zeit"
   }
 }

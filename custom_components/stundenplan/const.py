@@ -1,4 +1,20 @@
-DOMAIN = "stundenplan"
+"""Constants for the Stundenplan integration."""
+
+from __future__ import annotations
+
+from typing import Final
+
+DOMAIN: Final = "stundenplan"
+NAME: Final = "Stundenplan"
+VERSION: Final = "0.1.5"
+
+FRONTEND_URL_BASE: Final = f"/{DOMAIN}"
+CARD_URL: Final = f"{FRONTEND_URL_BASE}/school-schedule-card.js"
+DEFAULT_CHILD_NAME: Final = "Fritz"
+DEFAULT_SUBJECT_ICON: Final = "mdi:book-open-page-variant"
+DEFAULT_LESSON_COUNT: Final = 6
+MAX_LESSON_COUNT: Final = 12
+MAX_SUBJECT_COUNT: Final = 30
 
 CONF_CHILD_NAME = "child_name"
 CONF_LESSON_COUNT = "lesson_count"
@@ -8,12 +24,8 @@ CONF_LESSON_TIMES = "lesson_times"
 CONF_SUBJECTS = "subjects"
 CONF_WEEK_PLAN = "week_plan"
 
-DEFAULT_CHILD_NAME = "Fritz"
-DEFAULT_LESSON_COUNT = 6
-DEFAULT_SCHOOL_DAYS = ["mon", "tue", "wed", "thu", "fri"]
-
-WEEKDAY_ORDER = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
-WEEKDAY_NAMES = {
+WEEKDAY_KEYS: Final = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+WEEKDAY_NAMES_DE = {
     "mon": "Montag",
     "tue": "Dienstag",
     "wed": "Mittwoch",
@@ -22,7 +34,7 @@ WEEKDAY_NAMES = {
     "sat": "Samstag",
     "sun": "Sonntag",
 }
-WEEKDAY_SHORT_NAMES = {
+WEEKDAY_SHORT_DE = {
     "mon": "Mo",
     "tue": "Di",
     "wed": "Mi",
@@ -41,32 +53,57 @@ DEFAULT_LESSON_TIMES = [
     {"start": "12:50", "end": "13:35"},
 ]
 
-HA_COLOR_OPTIONS = [
-    {"value": "red", "label": "Rot", "hex": "#F44336", "rgb": [244, 67, 54]},
-    {"value": "pink", "label": "Pink", "hex": "#E91E63", "rgb": [233, 30, 99]},
-    {"value": "purple", "label": "Lila", "hex": "#9C27B0", "rgb": [156, 39, 176]},
-    {"value": "deep-purple", "label": "Dunkellila", "hex": "#673AB7", "rgb": [103, 58, 183]},
-    {"value": "indigo", "label": "Indigo", "hex": "#3F51B5", "rgb": [63, 81, 181]},
-    {"value": "blue", "label": "Blau", "hex": "#2196F3", "rgb": [33, 150, 243]},
-    {"value": "light-blue", "label": "Hellblau", "hex": "#03A9F4", "rgb": [3, 169, 244]},
-    {"value": "cyan", "label": "Cyan", "hex": "#00BCD4", "rgb": [0, 188, 212]},
-    {"value": "teal", "label": "Türkis", "hex": "#009688", "rgb": [0, 150, 136]},
-    {"value": "green", "label": "Grün", "hex": "#4CAF50", "rgb": [76, 175, 80]},
-    {"value": "light-green", "label": "Hellgrün", "hex": "#8BC34A", "rgb": [139, 195, 74]},
-    {"value": "lime", "label": "Limette", "hex": "#CDDC39", "rgb": [205, 220, 57]},
-    {"value": "yellow", "label": "Gelb", "hex": "#FFEB3B", "rgb": [255, 235, 59]},
-    {"value": "amber", "label": "Bernstein", "hex": "#FFC107", "rgb": [255, 193, 7]},
-    {"value": "orange", "label": "Orange", "hex": "#FF9800", "rgb": [255, 152, 0]},
-    {"value": "deep-orange", "label": "Tieforange", "hex": "#FF5722", "rgb": [255, 87, 34]},
-    {"value": "brown", "label": "Braun", "hex": "#795548", "rgb": [121, 85, 72]},
-    {"value": "light-grey", "label": "Hellgrau", "hex": "#BDBDBD", "rgb": [189, 189, 189]},
-    {"value": "grey", "label": "Grau", "hex": "#9E9E9E", "rgb": [158, 158, 158]},
-    {"value": "dark-grey", "label": "Dunkelgrau", "hex": "#616161", "rgb": [97, 97, 97]},
-    {"value": "blue-grey", "label": "Blaugrau", "hex": "#607D8B", "rgb": [96, 125, 139]},
+COLOR_VALUES = {
+    "primary": "var(--primary-color)",
+    "accent": "var(--accent-color)",
+    "red": "#F44336",
+    "pink": "#E91E63",
+    "purple": "#9C27B0",
+    "deep_purple": "#673AB7",
+    "indigo": "#3F51B5",
+    "blue": "#2196F3",
+    "light_blue": "#03A9F4",
+    "cyan": "#00BCD4",
+    "teal": "#009688",
+    "green": "#4CAF50",
+    "light_green": "#8BC34A",
+    "lime": "#CDDC39",
+    "yellow": "#FFEB3B",
+    "amber": "#FFC107",
+    "orange": "#FF9800",
+    "deep_orange": "#FF5722",
+    "brown": "#795548",
+    "grey": "#9E9E9E",
+    "blue_grey": "#607D8B",
+    "black": "#000000",
+    "white": "#FFFFFF",
+}
+
+SUBJECT_COLOR_OPTIONS = [
+    {"value": "primary", "label": "Primärfarbe"},
+    {"value": "accent", "label": "Akzentfarbe"},
+    {"value": "red", "label": "Rot"},
+    {"value": "pink", "label": "Rosa"},
+    {"value": "purple", "label": "Violett"},
+    {"value": "deep_purple", "label": "Dunkelviolett"},
+    {"value": "indigo", "label": "Indigo"},
+    {"value": "blue", "label": "Blau"},
+    {"value": "light_blue", "label": "Hellblau"},
+    {"value": "cyan", "label": "Cyan"},
+    {"value": "teal", "label": "Türkis"},
+    {"value": "green", "label": "Grün"},
+    {"value": "light_green", "label": "Hellgrün"},
+    {"value": "lime", "label": "Lime"},
+    {"value": "yellow", "label": "Gelb"},
+    {"value": "amber", "label": "Bernstein"},
+    {"value": "orange", "label": "Orange"},
+    {"value": "deep_orange", "label": "Tieforange"},
+    {"value": "brown", "label": "Braun"},
+    {"value": "grey", "label": "Grau"},
+    {"value": "blue_grey", "label": "Blaugrau"},
+    {"value": "black", "label": "Schwarz"},
+    {"value": "white", "label": "Weiß"},
 ]
-HA_COLOR_HEX = {item["value"]: item["hex"] for item in HA_COLOR_OPTIONS}
-HA_COLOR_LABELS = {item["value"]: item["label"] for item in HA_COLOR_OPTIONS}
-HA_COLOR_RGB = {item["value"]: item["rgb"] for item in HA_COLOR_OPTIONS}
 
 DEFAULT_SUBJECTS = [
     {"name": "Mathe", "icon": "mdi:calculator", "color": "blue"},
