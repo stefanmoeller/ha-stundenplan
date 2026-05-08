@@ -46,6 +46,12 @@ async def _async_register_static_paths(hass: HomeAssistant) -> None:
     domain_data[_STATIC_PATHS_REGISTERED] = True
 
 
+async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
+    """Set up the integration domain and register frontend paths early."""
+    await _async_register_static_paths(hass)
+    return True
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await _async_register_static_paths(hass)
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = entry_config(entry)
