@@ -134,6 +134,7 @@ tap_action:
 | `mode` | string | `today` | `today`, `table`, `cards` oder `card` |
 | `title` | string | `Stundenplan` | Titel der Lovelace Card |
 | `show_title` | boolean | `true` | blendet den Titel ein oder aus |
+| `show_day_navigation` | boolean | `false` | zeigt im `today`-Modus `<` und `>` zum Tagwechsel |
 | `tap_action` | object | optional | unterstützt `navigate` mit `navigation_path` |
 
 ## Sensor-Attribute
@@ -155,30 +156,6 @@ Die Sensor-Entität liefert neben dem aktuellen Status strukturierte Attribute f
 | `school_days` | konfigurierte Schultage |
 | `subjects` | konfigurierte Fächer mit Icon und Farbe |
 | `days` | vollständiger Wochenplan |
-
-## HACS-Veröffentlichung
-
-Das Repository ist als HACS Custom Repository vorbereitet:
-
-- `custom_components/stundenplan/manifest.json` enthält die erforderlichen Metadaten.
-- `hacs.json` liegt im Repository-Root.
-- Alle zur Integration gehörenden Laufzeitdateien liegen unter `custom_components/stundenplan/`.
-- Die Lovelace Card wird über `/stundenplan/school-schedule-card.js` aus dem Integrationspaket ausgeliefert.
-- `.github/workflows/validate.yml` prüft das Repository mit HACS und Hassfest.
-
-Für eine Aufnahme in die Standard-Repositories von HACS sind zusätzlich ein öffentliches GitHub-Repository, aktivierte Issues, passende Topics, ein Release, bestandene Validierungs-Workflows und ein passender Eintrag in `home-assistant/brands` erforderlich.
-
-## Entwicklung
-
-Nach Änderungen sollten mindestens diese Prüfungen laufen:
-
-```bash
-python -m compileall custom_components/stundenplan
-python -m json.tool custom_components/stundenplan/manifest.json
-python -m json.tool hacs.json
-```
-
-Auf GitHub übernehmen HACS Action und Hassfest die repositorynahen Validierungen.
 
 ## Support
 

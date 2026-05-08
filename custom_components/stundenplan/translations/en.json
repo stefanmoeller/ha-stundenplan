@@ -146,6 +146,7 @@
     }
   },
   "common": {
+    "card_title": "School schedule",
     "today": "Today",
     "school_end": "School ends",
     "free_day": "No school today",
@@ -154,6 +155,9 @@
     "missing_schedule_data": "No timetable data found.",
     "entity_not_found": "Entity not found",
     "unknown_mode": "Unknown mode",
-    "time": "Time"
+    "time": "Time",
+    "previous_day": "Previous day",
+    "next_day": "Next day",
+    "card_description": "Shows today's or the full school schedule."
   }
 }
