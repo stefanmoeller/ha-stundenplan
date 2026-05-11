@@ -62,6 +62,10 @@ Der Assistent fuehrt durch:
 | `school_days` | konfigurierte Schultage |
 | `subjects` | konfigurierte Faecher |
 | `days` | kompletter Wochenplan |
+| `day_subjects` | Faecher je Tag als Mapping (`mon`..`sun`) |
+| `day_school_end` | Schulende je Tag als Mapping (`mon`..`sun`) |
+| `monday_subjects` ... `sunday_subjects` | flache Faecherliste pro Wochentag |
+| `monday_school_end` ... `sunday_school_end` | flaches Schulende pro Wochentag |
 
 ---
 

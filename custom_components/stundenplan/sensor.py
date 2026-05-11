@@ -32,6 +32,15 @@ from .helpers import slugify_name, subject_lookup
 
 SCAN_INTERVAL = timedelta(minutes=15)
 DEFAULT_SCHOOL_DAYS = WEEKDAY_KEYS[:5]
+WEEKDAY_ENGLISH = {
+    "mon": "monday",
+    "tue": "tuesday",
+    "wed": "wednesday",
+    "thu": "thursday",
+    "fri": "friday",
+    "sat": "saturday",
+    "sun": "sunday",
+}
 
 
 async def async_setup_entry(
@@ -206,8 +215,28 @@ def build_schedule_attributes(
         }
 
     today_data = days.get(weekday_key, _empty_day(weekday_key))
+    day_subjects: dict[str, str] = {}
+    day_school_end: dict[str, str | None] = {}
+    flat_day_attributes: dict[str, str | None] = {}
 
-    return {
+    for day_key in WEEKDAY_KEYS:
+        day_data = days.get(day_key, {})
+        lessons = day_data.get("lessons", [])
+        subjects_line = ", ".join(
+            str(lesson.get("subject", "")).strip()
+            for lesson in lessons
+            if str(lesson.get("subject", "")).strip()
+        )
+        school_end_value = day_data.get("school_end")
+
+        day_subjects[day_key] = subjects_line
+        day_school_end[day_key] = school_end_value
+
+        day_name_en = WEEKDAY_ENGLISH[day_key]
+        flat_day_attributes[f"{day_name_en}_subjects"] = subjects_line
+        flat_day_attributes[f"{day_name_en}_school_end"] = school_end_value
+
+    attributes = {
         "child_name": data.get(CONF_CHILD_NAME),
         "weekday": weekday_key,
         "weekday_name": today_data.get("name"),
@@ -228,4 +257,8 @@ def build_schedule_attributes(
         "weekday_short_names": WEEKDAY_SHORT_DE,
         "subjects": subjects,
         "days": days,
+        "day_subjects": day_subjects,
+        "day_school_end": day_school_end,
     }
+    attributes.update(flat_day_attributes)
+    return attributes
