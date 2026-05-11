@@ -69,10 +69,11 @@ Der Assistent fuehrt durch:
 
 ---
 
-## Dashboard Beispiele (DE)
+## Dashboard Beispiele
 
-Hinweis: Fuer die nachfolgende kompakte Darstellung mit Icons/Farben wird
-[`lovelace-mushroom`](https://github.com/piitaya/lovelace-mushroom) benoetigt.
+Fuer kompakte Karten mit Icons/Farben wird
+[`lovelace-mushroom`](https://github.com/piitaya/lovelace-mushroom) benoetigt
+(zusätzliche Abhängigkeit).
 
 ### 1) Today (aktueller Tag)
 
@@ -239,77 +240,6 @@ cards:
 ```
 
 ---
-
-## Dashboard Examples (EN)
-
-### 1) Today
-
-```yaml
-type: markdown
-title: School schedule today
-content: >-
-  {% set e = 'sensor.stundenplan_fritz' %}
-  **{{ state_attr(e, 'weekday_name') or 'Today' }}**
-
-  {% if state_attr(e, 'is_free_day') %}
-  No school{% if state_attr(e, 'free_reason') %}: {{ state_attr(e, 'free_reason') }}{% endif %}
-  {% elif not state_attr(e, 'is_school_day') %}
-  Not a school day
-  {% elif (state_attr(e, 'lessons') or []) | count == 0 %}
-  No lessons
-  {% else %}
-  School end: {{ state_attr(e, 'school_end') or '-' }}
-
-  {% for l in state_attr(e, 'lessons') or [] %}
-  - {{ l.start or '--:--' }}-{{ l.end or '--:--' }} | {{ l.subject }}
-  {% endfor %}
-  {% endif %}
-```
-
-### 2) Week Table
-
-```yaml
-type: markdown
-title: Weekly schedule (table)
-content: >-
-  {% set e = 'sensor.stundenplan_fritz' %}
-  {% set days = state_attr(e, 'days') or {} %}
-  {% set school_days = state_attr(e, 'school_days') or [] %}
-
-  | Day | Lessons | School end |
-  | --- | --- | --- |
-  {% for d in school_days %}
-  {% set row = days.get(d, {}) %}
-  | {{ row.name or d }} | {{ (row.lessons or []) | map(attribute='subject') | join(', ') or '-' }} | {{ row.school_end or '-' }} |
-  {% endfor %}
-```
-
-### 3) Week Cards (Grid)
-
-```yaml
-type: grid
-columns: 2
-square: false
-cards:
-  - type: entity
-    entity: sensor.stundenplan_fritz
-    name: Status
-  - type: entities
-    title: Today
-    entities:
-      - type: attribute
-        entity: sensor.stundenplan_fritz
-        attribute: weekday_name
-        name: Weekday
-      - type: attribute
-        entity: sensor.stundenplan_fritz
-        attribute: school_end
-        name: School end
-      - type: attribute
-        entity: sensor.stundenplan_fritz
-        attribute: free_reason
-        name: Free-day reason
-```
 
 ## Support
 
