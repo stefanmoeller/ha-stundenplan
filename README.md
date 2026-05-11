@@ -71,6 +71,9 @@ Der Assistent fuehrt durch:
 
 ## Dashboard Beispiele (DE)
 
+Hinweis: Fuer die nachfolgende kompakte Darstellung mit Icons/Farben wird
+[`lovelace-mushroom`](https://github.com/piitaya/lovelace-mushroom) benoetigt.
+
 ### 1) Today (aktueller Tag)
 
 ```yaml
@@ -94,6 +97,32 @@ content: >-
   {% endfor %}
   {% endif %}
 ```
+
+### 1b) Today kompakt (Mushroom, Kurzbeispiel)
+
+```yaml
+type: vertical-stack
+cards:
+  - type: custom:mushroom-template-card
+    entity: sensor.stundenplan_fritz
+    primary: >
+      {{ state_attr(entity, 'weekday_name') or 'Heute' }}
+    secondary: >
+      Schulende: {{ state_attr(entity, 'school_end') or '-' }}
+    icon: mdi:clock-check-outline
+    icon_color: blue
+
+  - type: custom:mushroom-template-card
+    visibility:
+      - condition: template
+        value_template: "{{ (state_attr('sensor.stundenplan_fritz','lessons') or [])|count > 0 }}"
+    primary: "{{ state_attr('sensor.stundenplan_fritz','lessons')[0].subject }}"
+    icon: "{{ state_attr('sensor.stundenplan_fritz','lessons')[0].icon }}"
+    icon_color: "{{ state_attr('sensor.stundenplan_fritz','lessons')[0].color_key or 'blue' }}"
+```
+
+Den zweiten Kartenblock fuer Index `1..11` wiederholen, um alle Stunden
+des Tages darzustellen.
 
 ### 2) Wochen-Tabelle
 
@@ -138,6 +167,75 @@ cards:
         entity: sensor.stundenplan_fritz
         attribute: free_reason
         name: Grund schulfrei
+```
+
+### 4) Wochenansicht ohne Markdown (empfohlen)
+
+```yaml
+type: grid
+title: Stundenplan
+columns: 2
+square: false
+cards:
+  - type: entities
+    title: Montag
+    entities:
+      - type: attribute
+        entity: sensor.stundenplan_fritz
+        attribute: monday_subjects
+        name: Faecher
+      - type: attribute
+        entity: sensor.stundenplan_fritz
+        attribute: monday_school_end
+        name: Schulende
+
+  - type: entities
+    title: Dienstag
+    entities:
+      - type: attribute
+        entity: sensor.stundenplan_fritz
+        attribute: tuesday_subjects
+        name: Faecher
+      - type: attribute
+        entity: sensor.stundenplan_fritz
+        attribute: tuesday_school_end
+        name: Schulende
+
+  - type: entities
+    title: Mittwoch
+    entities:
+      - type: attribute
+        entity: sensor.stundenplan_fritz
+        attribute: wednesday_subjects
+        name: Faecher
+      - type: attribute
+        entity: sensor.stundenplan_fritz
+        attribute: wednesday_school_end
+        name: Schulende
+
+  - type: entities
+    title: Donnerstag
+    entities:
+      - type: attribute
+        entity: sensor.stundenplan_fritz
+        attribute: thursday_subjects
+        name: Faecher
+      - type: attribute
+        entity: sensor.stundenplan_fritz
+        attribute: thursday_school_end
+        name: Schulende
+
+  - type: entities
+    title: Freitag
+    entities:
+      - type: attribute
+        entity: sensor.stundenplan_fritz
+        attribute: friday_subjects
+        name: Faecher
+      - type: attribute
+        entity: sensor.stundenplan_fritz
+        attribute: friday_school_end
+        name: Schulende
 ```
 
 ---
