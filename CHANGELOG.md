@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+- Removed the bundled custom Lovelace frontend card completely.
+- Simplified the integration to sensor/attribute output only.
+- Updated documentation with DE/EN examples for standard Lovelace cards.
+
 ## 0.1.5
 
 - Harmonized integration version metadata.
