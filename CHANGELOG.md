@@ -1,7 +1,9 @@
 # Changelog
 
-## 0.2.1
+## 0.2.0
 
+- Removed the bundled custom Lovelace frontend card completely.
+- Simplified the integration to sensor/attribute output only.
 - Added flat per-day attributes for standard Lovelace usage without template sensors:
   - `monday_subjects` ... `sunday_subjects`
   - `monday_school_end` ... `sunday_school_end`
@@ -9,12 +11,7 @@
   - `day_subjects` (dict keyed by `mon`..`sun`)
   - `day_school_end` (dict keyed by `mon`..`sun`)
 - Kept all existing detailed attributes unchanged for frontend compatibility.
-
-## 0.2.0
-
-- Removed the bundled custom Lovelace frontend card completely.
-- Simplified the integration to sensor/attribute output only.
-- Updated documentation with DE/EN examples for standard Lovelace cards.
+- Updated documentation and examples for standard Lovelace cards.
 
 ## 0.1.5
 
