@@ -3,9 +3,9 @@
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://www.hacs.xyz/)
 [![Validate](https://github.com/stefanmoeller/ha-stundenplan/actions/workflows/validate.yml/badge.svg)](https://github.com/stefanmoeller/ha-stundenplan/actions/workflows/validate.yml)
 
-`Stundenplan` ist eine Home-Assistant-Integration fuer Schulstundenplaene.
+`Stundenplan` ist eine Home-Assistant-Integration für Schul-Stundenpläne.
 
-## Empfohlene Kombination (optimale Funktionalitaet)
+## Empfohlene Kombination (optimale Funktionalität)
 
 Für die beste Dashboard-Darstellung wird diese Integration zusammen mit der
 separaten Frontend-Karte verwendet:
@@ -33,45 +33,45 @@ Versionierung:
 
 - UI-basierte Konfiguration in Home Assistant
 - ein Sensor pro Stundenplan
-- Schultage, Stundenzeiten, Faecher und Wochenplan konfigurierbar
+- Schultage, Stundenzeiten, Fächer und Wochenplan konfigurierbar
 - optionaler Ferien-/Feiertagskalender
-- strukturierte Sensor-Attribute fuer Dashboards, Templates und Automationen
-- deutsch/englische Uebersetzungen fuer den Integrationsdialog
+- strukturierte Sensor-Attribute für Dashboards, Templates und Automationen
+- deutsch/englische Übersetzungen für den Integrationsdialog
 
 ## Voraussetzungen
 
 - Home Assistant `2024.6.0` oder neuer
-- optional: Kalender-Entitaet fuer schulfreie Tage
+- optional: Kalender-Entität für schulfreie Tage
 
 ## Installation (HACS)
 
 1. HACS -> `Custom repositories`
-2. Repository hinzufuegen:
+2. Repository hinzufügen:
 
    ```text
    https://github.com/stefanmoeller/ha-stundenplan
    ```
 
-3. Kategorie `Integration` waehlen
+3. Kategorie `Integration` wählen
 4. `Stundenplan` installieren
 5. Home Assistant neu starten
-6. Integration unter `Einstellungen > Geraete & Dienste` hinzufuegen
+6. Integration unter `Einstellungen > Geräte & Dienste` hinzufügen
 
 ## Konfiguration
 
-Der Assistent fuehrt durch:
+Der Assistent führt durch:
 
 1. Name, max. Stundenzahl, Schultage, optionaler Ferienkalender
 2. Beginn/Ende je Stunde
-3. Anzahl Faecher
+3. Anzahl Fächer
 4. Name/Icon/Farbe pro Fach
 5. Fach je Stunde und Wochentag
 
 ## Sensor-Attribute (Vertrag)
 
-Die Integration bleibt bewusst fuer zwei Anwendungsfaelle nutzbar:
+Die Integration bleibt bewusst für zwei Anwendungsfälle nutzbar:
 
-1. eigenstaendige Dashboards mit Standardkarten
+1. eigenständige Dashboards mit Standardkarten
 2. optimierte Darstellung mit `ha-stundenplan-card`
 
 ### Stabil (Standalone + Card, langfristig)
@@ -89,19 +89,19 @@ Die Integration bleibt bewusst fuer zwei Anwendungsfaelle nutzbar:
 | `lesson_count` | Anzahl Unterrichtsstunden |
 | `school_days` | konfigurierte Schultage |
 | `days` | kompletter Wochenplan |
-| `monday_subjects` ... `sunday_subjects` | flache Faecherliste pro Wochentag |
+| `monday_subjects` ... `sunday_subjects` | flache Fächerliste pro Wochentag |
 | `monday_school_end` ... `sunday_school_end` | flaches Schulende pro Wochentag |
 
-### Erweitert (vor allem fuer UI-Karten)
+### Erweitert (vor allem für UI-Karten)
 
 | Attribut | Beschreibung |
 | --- | --- |
 | `weekday_short` | kurzer Wochentag |
 | `lesson_times` | alle konfigurierten Stundenzeiten |
-| `subjects` | konfigurierte Faecher als Mapping |
-| `day_subjects` | Faecher je Tag als Mapping (`mon`..`sun`) |
+| `subjects` | konfigurierte Fächer als Mapping |
+| `day_subjects` | Fächer je Tag als Mapping (`mon`..`sun`) |
 | `day_school_end` | Schulende je Tag als Mapping (`mon`..`sun`) |
-| `weekday_names`, `weekday_short_names` | Namens-Mappings fuer Wochentage |
+| `weekday_names`, `weekday_short_names` | Namens-Mappings für Wochentage |
 
 Hinweis:
 Es werden aktuell keine vorhandenen Attribute entfernt, damit bestehende
@@ -111,8 +111,8 @@ Dashboards und Karten weiter funktionieren.
 
 ## Dashboard Beispiele
 
-Fuer kompakte Karten mit Icons/Farben wird
-[`lovelace-mushroom`](https://github.com/piitaya/lovelace-mushroom) benoetigt
+Für kompakte Karten mit Icons/Farben wird
+[`lovelace-mushroom`](https://github.com/piitaya/lovelace-mushroom) benötigt
 (zusätzliche Abhängigkeit).
 
 ### 1) Today (aktueller Tag)
@@ -162,7 +162,7 @@ cards:
     icon_color: "{{ state_attr('sensor.stundenplan_fritz','lessons')[0].color_key or 'blue' }}"
 ```
 
-Den zweiten Kartenblock fuer Index `1..11` wiederholen, um alle Stunden
+Den zweiten Kartenblock für Index `1..11` wiederholen, um alle Stunden
 des Tages darzustellen.
 
 ### 2) Wochen-Tabelle
@@ -224,7 +224,7 @@ cards:
       - type: attribute
         entity: sensor.stundenplan_fritz
         attribute: monday_subjects
-        name: Faecher
+        name: Fächer
       - type: attribute
         entity: sensor.stundenplan_fritz
         attribute: monday_school_end
@@ -236,7 +236,7 @@ cards:
       - type: attribute
         entity: sensor.stundenplan_fritz
         attribute: tuesday_subjects
-        name: Faecher
+        name: Fächer
       - type: attribute
         entity: sensor.stundenplan_fritz
         attribute: tuesday_school_end
@@ -248,7 +248,7 @@ cards:
       - type: attribute
         entity: sensor.stundenplan_fritz
         attribute: wednesday_subjects
-        name: Faecher
+        name: Fächer
       - type: attribute
         entity: sensor.stundenplan_fritz
         attribute: wednesday_school_end
@@ -260,7 +260,7 @@ cards:
       - type: attribute
         entity: sensor.stundenplan_fritz
         attribute: thursday_subjects
-        name: Faecher
+        name: Fächer
       - type: attribute
         entity: sensor.stundenplan_fritz
         attribute: thursday_school_end
@@ -272,7 +272,7 @@ cards:
       - type: attribute
         entity: sensor.stundenplan_fritz
         attribute: friday_subjects
-        name: Faecher
+        name: Fächer
       - type: attribute
         entity: sensor.stundenplan_fritz
         attribute: friday_school_end
@@ -283,5 +283,5 @@ cards:
 
 ## Support
 
-Issues und Feature-Wuensche bitte ueber GitHub melden:
+Issues und Feature-Wünsche bitte über GitHub melden:
 https://github.com/stefanmoeller/ha-stundenplan/issues
