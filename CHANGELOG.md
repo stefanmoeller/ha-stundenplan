@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.3
+## 0.3.0
 
 - Fixed config/options flow so cleared lessons (selection `-` or clear via `x`) are persisted correctly.
 - Documented a stable attribute contract for standalone dashboards and an extended set for UI cards.

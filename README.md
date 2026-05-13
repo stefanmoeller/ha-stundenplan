@@ -13,7 +13,7 @@ Für die beste Dashboard-Darstellung wird diese Integration zusammen mit der
 separaten Frontend-Karte verwendet:
 
 - `ha-stundenplan-card`: https://github.com/stefanmoeller/ha-stundenplan-card
-- Empfohlene Card-Version: `0.2.1` oder neuer
+- Empfohlene Card-Version: `0.3.0` oder neuer
 
 Empfohlener Ablauf:
 
