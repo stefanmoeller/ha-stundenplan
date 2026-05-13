@@ -385,12 +385,13 @@ class _StundenplanFlowMixin:
         subject_options = _subject_options(self._data.get(CONF_SUBJECTS) or [])
 
         fields = {}
+        suggested_values: dict[str, str] = {}
         for index in range(lesson_count):
+            key = _lesson_field(index)
             current_value = current[index] if index < len(current) else ""
             fields[
                 vol.Optional(
-                    _lesson_field(index),
-                    description={"suggested_value": current_value},
+                    key,
                 )
             ] = selector.SelectSelector(
                 selector.SelectSelectorConfig(
@@ -400,10 +401,17 @@ class _StundenplanFlowMixin:
                     custom_value=False,
                 )
             )
+            if current_value:
+                suggested_values[key] = current_value
+
+        schema = self.add_suggested_values_to_schema(
+            vol.Schema(fields),
+            suggested_values,
+        )
 
         return self.async_show_form(
             step_id="day_plan",
-            data_schema=vol.Schema(fields),
+            data_schema=schema,
             description_placeholders={"day": WEEKDAY_NAMES_DE.get(day, day)},
         )
 
