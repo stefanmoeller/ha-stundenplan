@@ -387,7 +387,7 @@ class _StundenplanFlowMixin:
         fields = {}
         for index in range(lesson_count):
             fields[
-                vol.Optional(
+                vol.Required(
                     _lesson_field(index),
                     default=current[index] if index < len(current) else "",
                 )
