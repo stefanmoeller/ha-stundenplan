@@ -7,6 +7,24 @@
 Ab Version `0.2.0` enthaelt das Projekt **kein eigenes Lovelace-Frontend mehr**.  
 Die Darstellung erfolgt ueber Standardkarten mit Sensor-Zustand und -Attributen.
 
+## Empfohlene Kombination (optimale Funktionalitaet)
+
+Für die beste Dashboard-Darstellung wird diese Integration zusammen mit der
+separaten Frontend-Karte verwendet:
+
+- `ha-stundenplan-card`: https://github.com/stefanmoeller/ha-stundenplan-card
+
+Empfohlener Ablauf:
+
+1. Integration `ha-stundenplan` installieren (dieses Repo, Kategorie `Integration`)
+2. Frontend `ha-stundenplan-card` installieren (Kategorie `Dashboard`)
+3. Lovelace-Ressource setzen:
+
+```yaml
+url: /hacsfiles/ha-stundenplan-card/school-schedule-card.js
+type: module
+```
+
 ## Features
 
 - UI-basierte Konfiguration in Home Assistant
