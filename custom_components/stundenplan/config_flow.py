@@ -386,10 +386,11 @@ class _StundenplanFlowMixin:
 
         fields = {}
         for index in range(lesson_count):
+            current_value = current[index] if index < len(current) else ""
             fields[
-                vol.Required(
+                vol.Optional(
                     _lesson_field(index),
-                    default=current[index] if index < len(current) else "",
+                    description={"suggested_value": current_value},
                 )
             ] = selector.SelectSelector(
                 selector.SelectSelectorConfig(
