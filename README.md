@@ -3,9 +3,7 @@
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://www.hacs.xyz/)
 [![Validate](https://github.com/stefanmoeller/ha-stundenplan/actions/workflows/validate.yml/badge.svg)](https://github.com/stefanmoeller/ha-stundenplan/actions/workflows/validate.yml)
 
-`Stundenplan` ist eine Home-Assistant-Integration fuer Schulstundenplaene.  
-Ab Version `0.2.0` enthaelt das Projekt **kein eigenes Lovelace-Frontend mehr**.  
-Die Darstellung erfolgt ueber Standardkarten mit Sensor-Zustand und -Attributen.
+`Stundenplan` ist eine Home-Assistant-Integration fuer Schulstundenplaene.
 
 ## Empfohlene Kombination (optimale Funktionalitaet)
 
