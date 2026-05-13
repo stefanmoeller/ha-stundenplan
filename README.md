@@ -13,6 +13,7 @@ Für die beste Dashboard-Darstellung wird diese Integration zusammen mit der
 separaten Frontend-Karte verwendet:
 
 - `ha-stundenplan-card`: https://github.com/stefanmoeller/ha-stundenplan-card
+- Empfohlene Card-Version: `0.2.1` oder neuer
 
 Empfohlener Ablauf:
 
@@ -24,6 +25,11 @@ Empfohlener Ablauf:
 url: /hacsfiles/ha-stundenplan-card/school-schedule-card.js
 type: module
 ```
+
+Versionierung:
+
+- `ha-stundenplan` (Integration) und `ha-stundenplan-card` (Frontend) werden getrennt versioniert.
+- Bitte bei Updates die jeweils aktuellen Release Notes in beiden Repositories beachten.
 
 ## Features
 
@@ -63,27 +69,45 @@ Der Assistent fuehrt durch:
 4. Name/Icon/Farbe pro Fach
 5. Fach je Stunde und Wochentag
 
-## Sensor-Attribute
+## Sensor-Attribute (Vertrag)
+
+Die Integration bleibt bewusst fuer zwei Anwendungsfaelle nutzbar:
+
+1. eigenstaendige Dashboards mit Standardkarten
+2. optimierte Darstellung mit `ha-stundenplan-card`
+
+### Stabil (Standalone + Card, langfristig)
 
 | Attribut | Beschreibung |
 | --- | --- |
 | `child_name` | Name des Stundenplans |
-| `weekday`, `weekday_name`, `weekday_short` | aktueller Wochentag |
+| `weekday`, `weekday_name` | aktueller Wochentag |
 | `date` | Datum im ISO-Format |
 | `is_school_day` | aktueller Tag ist Schultag |
 | `is_free_day` | Ferienkalender ist aktiv |
 | `free_reason` | Grund aus Kalender |
 | `school_end` | Ende der letzten Stunde am aktuellen Tag |
 | `lessons` | Stunden am aktuellen Tag |
-| `lesson_times` | alle konfigurierten Stundenzeiten |
 | `lesson_count` | Anzahl Unterrichtsstunden |
 | `school_days` | konfigurierte Schultage |
-| `subjects` | konfigurierte Faecher |
 | `days` | kompletter Wochenplan |
-| `day_subjects` | Faecher je Tag als Mapping (`mon`..`sun`) |
-| `day_school_end` | Schulende je Tag als Mapping (`mon`..`sun`) |
 | `monday_subjects` ... `sunday_subjects` | flache Faecherliste pro Wochentag |
 | `monday_school_end` ... `sunday_school_end` | flaches Schulende pro Wochentag |
+
+### Erweitert (vor allem fuer UI-Karten)
+
+| Attribut | Beschreibung |
+| --- | --- |
+| `weekday_short` | kurzer Wochentag |
+| `lesson_times` | alle konfigurierten Stundenzeiten |
+| `subjects` | konfigurierte Faecher als Mapping |
+| `day_subjects` | Faecher je Tag als Mapping (`mon`..`sun`) |
+| `day_school_end` | Schulende je Tag als Mapping (`mon`..`sun`) |
+| `weekday_names`, `weekday_short_names` | Namens-Mappings fuer Wochentage |
+
+Hinweis:
+Es werden aktuell keine vorhandenen Attribute entfernt, damit bestehende
+Dashboards und Karten weiter funktionieren.
 
 ---
 

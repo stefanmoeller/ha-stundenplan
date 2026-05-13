@@ -6,7 +6,7 @@ from typing import Final
 
 DOMAIN: Final = "stundenplan"
 NAME: Final = "Stundenplan"
-VERSION: Final = "0.2.0"
+VERSION: Final = "0.2.3"
 DEFAULT_CHILD_NAME: Final = "Fritz"
 DEFAULT_SUBJECT_ICON: Final = "mdi:book-open-page-variant"
 DEFAULT_LESSON_COUNT: Final = 6

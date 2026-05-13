@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.3
+
+- Fixed config/options flow so cleared lessons (selection `-` or clear via `x`) are persisted correctly.
+- Documented a stable attribute contract for standalone dashboards and an extended set for UI cards.
+- Clarified integration + card versioning and compatibility guidance.
+
 ## 0.2.0
 
 - Removed the bundled custom Lovelace frontend card completely.
