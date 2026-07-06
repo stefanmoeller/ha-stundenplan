@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+
+- Added the MIT license file required by HACS validation.
+- Confirmed the validation workflow with HACS and Hassfest after the repository cleanup.
+- Updated the GitHub Actions checkout dependency.
+
 ## 0.3.0
 
 - Fixed config/options flow so cleared lessons (selection `-` or clear via `x`) are persisted correctly.
